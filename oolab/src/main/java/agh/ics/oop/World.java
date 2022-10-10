@@ -14,7 +14,7 @@ public class World {
                 case BACKWARD -> "Zwierzak idzie do tyłu";
                 case RIGHT -> "Zwierzak skręca w prawo";
                 case LEFT -> "Zwierzak skręca w lewo";
-                case UNKNOWN -> "Zwierzak stoi w miejscu";
+                case UNKNOWN -> "Niewiadomo co robi zwierzak";
             };
             System.out.println(message);
         }
