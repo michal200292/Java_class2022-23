@@ -6,5 +6,4 @@ public enum Direction {
     RIGHT,
     LEFT,
 
-    UNKNOWN
 }
