@@ -7,7 +7,7 @@ public class World {
     public static void main(String[] args){
         MapDirection tak = MapDirection.NORTH;
         for(int i = 0; i <= 10; i++){
-            System.out.println(tak.toString());
+            System.out.println(tak.toUnitVector());
             tak = tak.next();
         }
     }

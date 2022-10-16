@@ -10,7 +10,7 @@ public class Vector2d {
     public String toString(){
         return "(" + this.x + "," + this.y + ")";
     }
-    public boolean preceds(Vector2d other){
+    public boolean precedes(Vector2d other){
         return (this.x <= other.x) && (this.y <= other.y);
     }
     public boolean follows(Vector2d other){
@@ -28,10 +28,14 @@ public class Vector2d {
     public Vector2d substract(Vector2d other){
         return new Vector2d(this.x - other.x, this.y - other.y);
     }
-    public boolean equals(Vector2d other){
-        return ((this.x == other.x) && (this.y == other.y));
+    public boolean equals(Object other){
+        if (this == other)
+            return true;
+        if (!(other instanceof Vector2d that))
+            return false;
+        return (this.x == that.x && this.y == that.y);
     }
-    public Vector2d opposite(Vector2d other){
+    public Vector2d opposite(){
         return new Vector2d(-this.x, -this.y);
     }
 }
