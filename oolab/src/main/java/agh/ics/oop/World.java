@@ -1,8 +1,6 @@
 package agh.ics.oop;
 
 
-import java.util.Map;
-
 public class World {
     public static void main(String[] args){
         MapDirection tak = MapDirection.NORTH;
