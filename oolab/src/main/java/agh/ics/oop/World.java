@@ -3,10 +3,13 @@ package agh.ics.oop;
 
 public class World {
     public static void main(String[] args){
-        MapDirection tak = MapDirection.NORTH;
-        for(int i = 0; i <= 10; i++){
-            System.out.println(tak.toUnitVector());
-            tak = tak.next();
+        Animal cat = new Animal();
+        System.out.println(cat);
+        OptionParser parser = new OptionParser();
+        String[] moves = new String[]{"f", "b", "l", "r", "f", "l", "f", "f", "r", "f"};
+        for(MoveDirection move : parser.parse(moves)){
+            cat.move(move);
+            System.out.println(cat);
         }
     }
     public static void run(Direction[] moves){
