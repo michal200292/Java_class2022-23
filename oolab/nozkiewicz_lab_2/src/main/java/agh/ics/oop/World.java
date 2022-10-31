@@ -3,13 +3,10 @@ package agh.ics.oop;
 
 public class World {
     public static void main(String[] args){
-        MoveDirection[] directions = new OptionParser().parse(args);
-        IWorldMap map = new RectangularMap(10, 5);
-        Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
-        IEngine engine = new SimulationEngine(directions, map, positions);
-        engine.run();
+        Animal cat = new Animal();
+        System.out.println(cat);
     }
-    /*public static void run(Direction[] moves){
+    public static void run(Direction[] moves){
         int i = 0;
         while (i < moves.length && !(moves[i] == null)){
             String message = switch (moves[i]) {
@@ -21,8 +18,8 @@ public class World {
             System.out.println(message);
             i += 1;
         }
-    }*/
-    /*public static Direction[] string_to_enum(String[] args){
+    }
+    public static Direction[] string_to_enum(String[] args){
         Direction[] converted = new Direction[args.length];
         int i = 0;
         for(String x : args){
@@ -39,5 +36,5 @@ public class World {
             }
         }
         return converted;
-    }*/
+    }
 }
