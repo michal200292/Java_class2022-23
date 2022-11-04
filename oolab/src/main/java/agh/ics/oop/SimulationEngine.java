@@ -6,7 +6,6 @@ import java.util.List;
 public class SimulationEngine implements IEngine{
     private IWorldMap map;
     private MoveDirection[] moves;
-
     private List<Animal> animals;
     public SimulationEngine(MoveDirection[] moves, IWorldMap map, Vector2d[] positions){
         this.moves = moves;
