@@ -1,14 +1,15 @@
 package agh.ics.oop;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class GrassField extends AbstractWorldMap implements IWorldMap{
+public class GrassField extends AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
 
     private int bound;
     public GrassField(int n){
-        this.animals = new ArrayList<>();
-        this.grass = new ArrayList<>();
+        this.animals = new HashMap<>();
+        this.grass = new HashMap<>();
         this.visualizer = new MapVisualizer(this);
         this.lowerLeftCorner = new Vector2d(0, 0);
         this.upperRightCorner = new Vector2d(0, 0);
@@ -26,7 +27,7 @@ public class GrassField extends AbstractWorldMap implements IWorldMap{
             newPos = new Vector2d(x, y);
         }while(isOccupied(newPos));
         updateCorners(newPos);
-        this.grass.add(new Grass(newPos));
+        this.grass.put(newPos, new Grass(newPos));
     }
     public void updateCorners(Vector2d newItem){
         this.lowerLeftCorner = this.lowerLeftCorner.lowerLeft(newItem);
@@ -40,7 +41,7 @@ public class GrassField extends AbstractWorldMap implements IWorldMap{
             return false;
         } else if (object instanceof Grass) {
             drawNewGrass();
-            this.grass.remove(object);
+            this.grass.remove(((Grass) object).getPosition());
             return true;
         }
         else{

@@ -2,12 +2,13 @@ package agh.ics.oop;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-abstract class AbstractWorldMap implements IWorldMap{
+abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
     protected Vector2d lowerLeftCorner;
     protected Vector2d upperRightCorner;
-    protected List<Animal> animals;
-    protected List<Grass> grass;
+    protected Map<Vector2d, Animal> animals;
+    protected Map<Vector2d, Grass> grass;
     protected MapVisualizer visualizer;
 
     abstract void updateCorners(Vector2d newItem);
@@ -17,8 +18,14 @@ abstract class AbstractWorldMap implements IWorldMap{
             return false;
         }
         this.updateCorners(animal.getPosition());
-        this.animals.add(animal);
+        this.animals.put(animal.getPosition(), animal);
         return true;
+    }
+    @Override
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition){
+        Animal object = this.animals.get(oldPosition);
+        this.animals.remove(oldPosition);
+        this.animals.put(newPosition, object);
     }
     @Override
     public boolean isOccupied(Vector2d position){
@@ -26,16 +33,12 @@ abstract class AbstractWorldMap implements IWorldMap{
     }
     @Override
     public Object objectAt(Vector2d position){
-        for(Animal x: this.animals){
-            if(x.isAt(position)){
-                return x;
-            }
+        if(this.animals.get(position) != null){
+            return this.animals.get(position);
         }
         if(this instanceof GrassField) {
-            for (Grass x : this.grass) {
-                if (x.getPosition().equals(position)) {
-                    return x;
-                }
+            if(this.grass.get(position) != null){
+                return this.grass.get(position);
             }
         }
         return null;
