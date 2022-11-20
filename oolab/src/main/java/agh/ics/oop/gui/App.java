@@ -57,16 +57,30 @@ public class App extends Application {
             GridPane.setHalignment(label2, HPos.CENTER);
         }
 
-        for(int i = lowerLeft.x; i <= upperRight.x; ++i){
-            for(int j = lowerLeft.y; j <= upperRight.y; ++j){
-                Object object = map.objectAt(new Vector2d(i, j));
-                if(object != null) {
-                    Label label2 = new Label(object.toString());
-                    grid.add(label2, i - lowerLeft.x + 1, upperRight.y - j + 1, 1, 1);
-                    GridPane.setHalignment(label2, HPos.CENTER);
-                }
+        for(var entry: map.animals.entrySet()){
+            Label label2 = new Label(entry.getValue().toString());
+            grid.add(label2, entry.getKey().x - lowerLeft.x + 1, upperRight.y - entry.getKey().y + 1, 1, 1);
+            GridPane.setHalignment(label2, HPos.CENTER);
+        }
+
+        for(var entry: map.grass.entrySet()){
+            if(!map.animals.containsKey(entry.getKey())) {
+                Label label2 = new Label(entry.getValue().toString());
+                grid.add(label2, entry.getKey().x - lowerLeft.x + 1, upperRight.y - entry.getKey().y + 1, 1, 1);
+                GridPane.setHalignment(label2, HPos.CENTER);
             }
         }
+
+//        for(int i = lowerLeft.x; i <= upperRight.x; ++i){
+//            for(int j = lowerLeft.y; j <= upperRight.y; ++j){
+//                Object object = map.objectAt(new Vector2d(i, j));
+//                if(object != null) {
+//                    Label label2 = new Label(object.toString());
+//                    grid.add(label2, i - lowerLeft.x + 1, upperRight.y - j + 1, 1, 1);
+//                    GridPane.setHalignment(label2, HPos.CENTER);
+//                }
+//            }
+//        }
 
         Scene scene = new Scene(grid, 400 , 400);
         primaryStage.setScene(scene);
