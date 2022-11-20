@@ -1,14 +1,9 @@
 package agh.ics.oop;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Animal{
-    private Vector2d position;
+public class Animal extends AbstractWorldMapElement{
     private MapDirection orientation;
-    private IWorldMap map;
-    private List<IPositionChangeObserver> observers;
+
     public Animal(){
         this.position = new Vector2d(2, 2);
         this.orientation = MapDirection.NORTH;
@@ -17,23 +12,19 @@ public class Animal{
         this.position = new Vector2d(2, 2);
         this.orientation = MapDirection.NORTH;
         this.map = map;
-        this.observers = new ArrayList<>();
+        this.ElementInTreeSet = new TreeSetObject(this.position, true);
         addObserver((IPositionChangeObserver)map);
     }
     public Animal(IWorldMap map, Vector2d initialPosition){
         this.map = map;
         this.position = initialPosition;
         this.orientation = MapDirection.NORTH;
-        this.observers = new ArrayList<>();
+        this.ElementInTreeSet = new TreeSetObject(this.position, true);
         addObserver((IPositionChangeObserver)map);
     }
     @Override
     public String toString(){
         return this.orientation.toString();
-    }
-
-    protected Vector2d getPosition() {
-        return this.position;
     }
 
     public boolean isAt(Vector2d position){
@@ -43,18 +34,10 @@ public class Animal{
         return this.orientation.equals(orientation);
     }
 
-    private void addObserver(IPositionChangeObserver observer){
-        this.observers.add(observer);
-    }
-
-    private void removeObserver(IPositionChangeObserver observer){
-        this.observers.remove(observer);
-    }
-
     private void positionChanged(Vector2d oldPosition, Vector2d newPosition){
         if(this.map.canMoveTo(newPosition)){
-            for(IPositionChangeObserver x : this.observers){
-                x.positionChanged(oldPosition, newPosition);
+            for(IPositionChangeObserver x : this.observers) {
+                x.positionChanged(this, oldPosition, newPosition);
             }
             this.position = newPosition;
         }

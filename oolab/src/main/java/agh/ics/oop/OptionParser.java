@@ -1,35 +1,21 @@
 package agh.ics.oop;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class OptionParser{
-    public MoveDirection[] parse(String[] moves){
-        int count = 0;
-        for(String move : moves){
-            switch(move){
-                case "f", "forward", "b", "backward", "l",
-                        "left", "r", "right" -> count++;
-            }
-        }
-        MoveDirection[] parsed = new MoveDirection[count];
+    public static MoveDirection[] parse(String[] moves) throws IllegalArgumentException{
+        MoveDirection[] parsed = new MoveDirection[moves.length];
         int i = 0;
         for(String move : moves){
-            switch(move){
-                case "f", "forward" -> {
-                    parsed[i] = MoveDirection.FORWARD;
-                    i ++;
-                }
-                case "b", "backward" -> {
-                    parsed[i] = MoveDirection.BACKWARD;
-                    i ++;
-                }
-                case "l", "left" -> {
-                    parsed[i] = MoveDirection.LEFT;
-                    i ++;
-                }
-                case "r", "right" -> {
-                    parsed[i] = MoveDirection.RIGHT;
-                    i ++;
-                }
+            switch (move) {
+                case "f", "forward" -> parsed[i] = MoveDirection.FORWARD;
+                case "b", "backward" -> parsed[i] = MoveDirection.BACKWARD;
+                case "l", "left" -> parsed[i] = MoveDirection.LEFT;
+                case "r", "right" -> parsed[i] = MoveDirection.RIGHT;
+                default -> throw new IllegalArgumentException(move + " is not a legal move");
             }
+            i++;
         }
         return parsed;
     }

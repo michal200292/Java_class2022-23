@@ -1,31 +1,33 @@
 package agh.ics.oop;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
-    protected Vector2d lowerLeftCorner;
-    protected Vector2d upperRightCorner;
-    protected Map<Vector2d, Animal> animals;
-    protected Map<Vector2d, Grass> grass;
-    protected MapVisualizer visualizer;
+public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
+    public Vector2d lowerLeftCorner;
+    public Vector2d upperRightCorner;
+    public Map<Vector2d, Animal> animals = new HashMap<>();
+    public Map<Vector2d, Grass> grass = new HashMap<>();
+    public MapVisualizer visualizer;
 
-    abstract void updateCorners(Vector2d newItem);
+    public MapBoundary sortedObjects = new MapBoundary();
+
     abstract public boolean canMoveTo(Vector2d position);
-    public boolean place(Animal animal){
+    public boolean place(Animal animal) throws IllegalArgumentException{
         if(!canMoveTo(animal.getPosition())){
-            return false;
+            throw new IllegalArgumentException("Position " + animal.getPosition() + " is already occupied");
         }
-        this.updateCorners(animal.getPosition());
         this.animals.put(animal.getPosition(), animal);
+        animal.addObserver(this.sortedObjects);
+        this.sortedObjects.addNewElement(animal.ElementInTreeSet);
         return true;
     }
     @Override
-    public void positionChanged(Vector2d oldPosition, Vector2d newPosition){
-        Animal object = this.animals.get(oldPosition);
+    public void positionChanged(Object object, Vector2d oldPosition, Vector2d newPosition){
         this.animals.remove(oldPosition);
-        this.animals.put(newPosition, object);
+        this.animals.put(newPosition, (Animal) object);
     }
     @Override
     public boolean isOccupied(Vector2d position){
@@ -44,8 +46,4 @@ abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
         return null;
     }
 
-    @Override
-    public String toString(){
-        return this.visualizer.draw(this.lowerLeftCorner, this.upperRightCorner);
-    }
 }

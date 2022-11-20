@@ -1,13 +1,11 @@
 package agh.ics.oop;
 
-public class Grass{
-    private Vector2d position;
-    public Grass(Vector2d position){
-        this.position = position;
-    }
+public class Grass extends AbstractWorldMapElement{
+    public Grass(Vector2d position, IPositionChangeObserver observer){
 
-    public Vector2d getPosition() {
-        return this.position;
+        this.position = position;
+        this.observers.add(observer);
+        this.ElementInTreeSet = new TreeSetObject(this.position, false);
     }
 
     @Override
