@@ -8,6 +8,9 @@ abstract class AbstractWorldMapElement implements IMapElement{
     protected IWorldMap map;
     protected List<IPositionChangeObserver> observers = new ArrayList<>();
 
+    @Override
+    abstract public String getImagePath();
+
     public Vector2d getPosition() {
         return position;
     }

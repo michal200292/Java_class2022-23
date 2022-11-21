@@ -10,6 +10,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
+
 
 public class App extends Application {
 
@@ -31,7 +33,7 @@ public class App extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage){
+    public void start(Stage primaryStage) throws FileNotFoundException {
         GridPane grid = new GridPane();
         grid.setGridLinesVisible(true);
         Vector2d lowerLeft = map.lowerLeftCorner;
@@ -40,34 +42,34 @@ public class App extends Application {
         Label label1 = new Label("y/x");
         grid.add(label1, 0, 0, 1, 1);
         GridPane.setHalignment(label1, HPos.CENTER);
-        grid.getColumnConstraints().add(new ColumnConstraints(20));
-        grid.getRowConstraints().add(new RowConstraints(20));
+        grid.getColumnConstraints().add(new ColumnConstraints(40));
+        grid.getRowConstraints().add(new RowConstraints(40));
 
         for(int i = lowerLeft.x; i <= upperRight.x; ++i){
             Label label2 = new Label(String.valueOf(i));
             grid.add(label2, i - lowerLeft.x + 1, 0, 1, 1);
-            grid.getColumnConstraints().add(new ColumnConstraints(20));
+            grid.getColumnConstraints().add(new ColumnConstraints(40));
             GridPane.setHalignment(label2, HPos.CENTER);
         }
 
         for(int i = upperRight.y; i >= lowerLeft.y; --i){
             Label label2 = new Label(String.valueOf(i));
             grid.add(label2, 0, upperRight.y - i + 1, 1, 1);
-            grid.getRowConstraints().add(new RowConstraints(20));
+            grid.getRowConstraints().add(new RowConstraints(40));
             GridPane.setHalignment(label2, HPos.CENTER);
         }
 
         for(var entry: map.animals.entrySet()){
-            Label label2 = new Label(entry.getValue().toString());
-            grid.add(label2, entry.getKey().x - lowerLeft.x + 1, upperRight.y - entry.getKey().y + 1, 1, 1);
-            GridPane.setHalignment(label2, HPos.CENTER);
+            GuiElementBox elementBox = new GuiElementBox((IMapElement) entry.getValue());
+            grid.add(elementBox.vbox, entry.getKey().x - lowerLeft.x + 1, upperRight.y - entry.getKey().y + 1, 1, 1);
+            GridPane.setHalignment(elementBox.vbox, HPos.RIGHT);
         }
 
         for(var entry: map.grass.entrySet()){
             if(!map.animals.containsKey(entry.getKey())) {
-                Label label2 = new Label(entry.getValue().toString());
-                grid.add(label2, entry.getKey().x - lowerLeft.x + 1, upperRight.y - entry.getKey().y + 1, 1, 1);
-                GridPane.setHalignment(label2, HPos.CENTER);
+                GuiElementBox elementBox = new GuiElementBox((IMapElement) entry.getValue());
+                grid.add(elementBox.vbox, entry.getKey().x - lowerLeft.x + 1, upperRight.y - entry.getKey().y + 1, 1, 1);
+                GridPane.setHalignment(elementBox.vbox, HPos.RIGHT);
             }
         }
 
@@ -82,7 +84,7 @@ public class App extends Application {
 //            }
 //        }
 
-        Scene scene = new Scene(grid, 400 , 400);
+        Scene scene = new Scene(grid, 800 , 800);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

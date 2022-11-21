@@ -27,6 +27,11 @@ public class Animal extends AbstractWorldMapElement{
         return this.orientation.toString();
     }
 
+    @Override
+    public String getImagePath() {
+        return "C:/Users/filas/IdeaProjects/Java_class2022-23/oolab/src/main/resources/animal" + orientation.toString() + ".png";
+    }
+
     public boolean isAt(Vector2d position){
         return this.position.equals(position);
     }
