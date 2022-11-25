@@ -2,6 +2,7 @@ package agh.ics.oop.gui;
 
 import agh.ics.oop.*;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -12,10 +13,15 @@ import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
 
-
-public class App extends Application {
+public class App extends Application implements IPositionChangeObserver {
 
     private AbstractWorldMap map;
+    private GridPane grid;
+
+    private Stage primaryStage;
+
+    int moveDelay = 300;
+
     @Override
     public void init() throws IllegalArgumentException{
         String[] args = getParameters().getRaw().toArray(new String[0]);
@@ -23,8 +29,11 @@ public class App extends Application {
             MoveDirection[] directions = OptionParser.parse(args);
             map = new GrassField(10);
             Vector2d[] positions = {new Vector2d(2, 2), new Vector2d(2, 4)};
-            IEngine engine = new SimulationEngine(directions, map, positions);
-            engine.run();
+            ThreadedSimulationEngine engine = new ThreadedSimulationEngine(directions, map, positions, this);
+            Thread engineThread = new Thread(engine);
+            engineThread.start();
+//            IEngine engine = new SimulationEngine(directions, map, positions);
+//            engine.run();
         }
         catch(IllegalArgumentException ex){
             ex.printStackTrace();
@@ -33,8 +42,9 @@ public class App extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws FileNotFoundException {
-        GridPane grid = new GridPane();
+    public void start(Stage pStage) throws FileNotFoundException {
+        primaryStage = pStage;
+        grid = new GridPane();
         grid.setGridLinesVisible(true);
         Vector2d lowerLeft = map.lowerLeftCorner;
         Vector2d upperRight = map.upperRightCorner;
@@ -60,16 +70,12 @@ public class App extends Application {
         }
 
         for(var entry: map.animals.entrySet()){
-            GuiElementBox elementBox = new GuiElementBox((IMapElement) entry.getValue());
-            grid.add(elementBox.vbox, entry.getKey().x - lowerLeft.x + 1, upperRight.y - entry.getKey().y + 1, 1, 1);
-            GridPane.setHalignment(elementBox.vbox, HPos.RIGHT);
+            addElement((IMapElement) entry.getValue(), entry.getKey().x - lowerLeft.x + 1, upperRight.y - entry.getKey().y + 1);
         }
 
         for(var entry: map.grass.entrySet()){
             if(!map.animals.containsKey(entry.getKey())) {
-                GuiElementBox elementBox = new GuiElementBox((IMapElement) entry.getValue());
-                grid.add(elementBox.vbox, entry.getKey().x - lowerLeft.x + 1, upperRight.y - entry.getKey().y + 1, 1, 1);
-                GridPane.setHalignment(elementBox.vbox, HPos.RIGHT);
+                addElement((IMapElement) entry.getValue(), entry.getKey().x - lowerLeft.x + 1, upperRight.y - entry.getKey().y + 1);
             }
         }
 
@@ -87,5 +93,13 @@ public class App extends Application {
         Scene scene = new Scene(grid, 800 , 800);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+    void addElement(IMapElement element, int x, int y) throws FileNotFoundException {
+        GuiElementBox elementBox = new GuiElementBox(element);
+        grid.add(elementBox.vbox, x, y, 1, 1);
+        GridPane.setHalignment(elementBox.vbox, HPos.RIGHT);
+    }
+    public void positionChanged(Object object, Vector2d oldPosition, Vector2d newPosition){
+
     }
 }
