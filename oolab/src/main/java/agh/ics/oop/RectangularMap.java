@@ -12,6 +12,8 @@ public class RectangularMap extends AbstractWorldMap implements IWorldMap, IPosi
         this.upperRightCorner = new Vector2d(width, height);
         this.visualizer = new MapVisualizer(this);
     }
+
+    public void updateCorners(){}
     @Override
     public boolean canMoveTo(Vector2d position){
         return (position.follows(this.lowerLeftCorner) && position.precedes(this.upperRightCorner) && !isOccupied(position));

@@ -22,6 +22,7 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
         this.animals.put(animal.getPosition(), animal);
         animal.addObserver(this.sortedObjects);
         this.sortedObjects.addNewElement(animal.ElementInTreeSet);
+        updateCorners();
         return true;
     }
     @Override
@@ -45,5 +46,6 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
         }
         return null;
     }
+    abstract public void updateCorners();
 
 }

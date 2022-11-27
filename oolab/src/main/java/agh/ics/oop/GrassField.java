@@ -30,6 +30,10 @@ public class GrassField extends AbstractWorldMap implements IWorldMap, IPosition
         this.sortedObjects.addNewElement(newGrass.ElementInTreeSet);
     }
 
+    public void updateCorners(){
+        this.lowerLeftCorner = this.sortedObjects.getLowerLeftCorner();
+        this.upperRightCorner = this.sortedObjects.getUpperRightCorner();
+    }
     @Override
     public boolean canMoveTo(Vector2d position){
         Object object = objectAt(position);
@@ -38,8 +42,7 @@ public class GrassField extends AbstractWorldMap implements IWorldMap, IPosition
 
     @Override
     public String toString(){
-        this.lowerLeftCorner = this.sortedObjects.getLowerLeftCorner();
-        this.upperRightCorner = this.sortedObjects.getUpperRightCorner();
+        updateCorners();
         return this.visualizer.draw(this.lowerLeftCorner, this.upperRightCorner);
     }
 }
