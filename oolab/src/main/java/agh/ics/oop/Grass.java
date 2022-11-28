@@ -15,6 +15,6 @@ public class Grass extends AbstractWorldMapElement{
 
     @Override
     public String getImagePath() {
-        return "oolab/src/main/resources/grass.png";
+        return "src/main/resources/grass.png";
     }
 }
