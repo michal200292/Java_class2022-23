@@ -1,2 +1,2 @@
 # Java_class2022-23
-Project for my object oriented programming class
+Exercises for my object oriented programming class written in java
